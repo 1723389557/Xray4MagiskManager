@@ -10,11 +10,24 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@ant-design/react-native": "^4.2.0",
     "@eva-design/eva": "^2.1.1",
+    "@react-native-community/async-storage": "^1.12.1",
+    "@react-native-community/cameraroll": "^4.1.2",
+    "@react-native-community/segmented-control": "^2.2.2",
+    "@react-native-community/slider": "^4.2.0",
+    "@react-native-picker/picker": "^2.3.1",
     "@ui-kitten/components": "^5.1.1",
+    "antd-mobile": "^5.2.2",
+    "axios": "^0.26.0",
+    "buffer": "^6.0.3",
+    "fbjs": "^3.0.4",
     "react": "17.0.2",
     "react-native": "0.67.2",
     "react-native-fs": "^2.19.0",
+    "react-native-gesture-handler": "^2.2.0",
+    "react-native-pager-view": "^5.4.11",
+    "react-native-storage": "^1.0.1",
     "react-native-svg": "^12.1.1"
   },
   "devDependencies": {
