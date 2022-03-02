@@ -121,16 +121,19 @@ export const ConfigRadioGroup = (props) => {
             key:CURRENT_CONFIG_ID,
             data:configs[selectedIndex]
         })
+        //切换当前模式显示
         setCurrentMode(configs[selectedIndex])
+        //重新加载组件
+        setReloadFlag(new Date().getTime().toString())
     }
     const configRemove = (id_path) => {
         //{"id": "1646151884423", "path": "/data/adb/xray/configModes/rtttt.conf"}
         // setReloadFlag("678")
         //删除前，判断是否选中的是当前模式，
         //遇到的问题：打开应用后，currentMode被设置了，但是获取时却是空对象
-        // console.log("当前模式：",currentMode)
-        // console.log("删除模式：",id_path)
-        // console.log("模式是否相等",id_path["id"]===currentMode["id"])
+        console.log("当前模式：",currentMode)
+        console.log("删除模式：",id_path)
+        console.log("模式是否相等",id_path["id"]===currentMode["id"])
         if(id_path["id"]===currentMode["id"]){
             Toast.fail({
                 content: '不能删除当前模式'
