@@ -1,5 +1,5 @@
 # Xray4MagiskManager
-  一个管理Xray4Magisk的APP，支持xray、tproxy的进程的开启、关闭的控制，从剪切板导入xray配置，选择当前节点等功能。
+  一个管理[Xray4Magisk]( https://github.com/Asterisk4Magisk/Xray4Magisk )的APP，支持xray、tproxy的进程的开启、关闭的控制，从剪切板导入xray配置，选择当前节点等功能。
 ## 如何使用
 安装它
 ### 如何导入配置
