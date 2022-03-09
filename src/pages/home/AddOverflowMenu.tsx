@@ -29,8 +29,6 @@ export const AddOverflowMenu = (props) => {
     },[])
 
     const onItemSelect = (index) => {
-        // setSelectedIndex(index);
-        // console.log(index)
         addConfig()
         //选中菜单
         // if(index["row"] === 0){
@@ -57,23 +55,16 @@ export const AddOverflowMenu = (props) => {
                 const granted = await PermissionsAndroid.request(
                     PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
                     {
-                        //第一次请求【拒绝】后提示用户你为什么要这个权限
                         'title': '我要读写权限',
                         'message': '没权限我不能工作，同意就好了'
                     }
                 );
                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                    console.log('true');
-                    // 继续运行其它代码
                 } else {
-                    console.log('error');
                 }
             }else{
-                console.log('你已获取了读写权限');
-                // 继续运行其它代码
             }
         } catch (err) {
-            console.log(err.toString());
         }
     }
 
@@ -90,16 +81,11 @@ export const AddOverflowMenu = (props) => {
             let tcpSettings = ProxyConfig.prototype.tcpSettings(vmess_obj['type'],vmess_obj['path'],vmess_obj['host'])
             proxy_config["outbounds"][0]["streamSettings"]["tcpSettings"] = tcpSettings
         }
-        console.log("vmess配置文件对象：",JSON.stringify(proxy_config))
         addConfigFile(JSON.stringify(proxy_config));
     }
     const addConfig = async () =>{
         let config = await Clipboard.getString();
-        // const outbounds = "{" + config + "}";
-        // const outbounds = {"outbounds":JSON.parse(config)["outbounds"]}
         let outbounds = {}
-        console.log("导入的剪切板内容：",config)
-        //如果导入的不是完整配置，return
         try{
             outbounds = JSON.parse(config)["outbounds"]
         }catch (e){
@@ -108,12 +94,9 @@ export const AddOverflowMenu = (props) => {
             })
             return
         }
-        // console.log("没有完整配置的返回值：",outbounds)
         let config_str = '{"outbounds":'+JSON.stringify(outbounds)+"}";
-        // console.log("AddOverflowMenu.tsx的addConfig方法：",config_str)
         addConfigFile(config_str)
     }
-    //出现对话框，输入名称，用shell添加配置文件
     const addConfigFile = (config_str) =>{
         Modal.prompt(
             '添加名称',
@@ -122,14 +105,12 @@ export const AddOverflowMenu = (props) => {
                 async function run(){
                     let save_path = V2RAY_CONFIG_DIR+"/"+configName+".conf"
                     const commant = ["echo","'"+config_str+"'"+">"+save_path]
-                    console.log("保存地址：",save_path)
 
                     let result = await AndroidShell.runShell(commant,null,true).then(log=>{
                         let save_id = new Date().getTime().toString();
-                        //添加配置文件成功
                         Storage.save({
-                            key: CONFIG_KEY, // 注意:请不要在key中使用_下划线符号!
-                            id: save_id, // 注意:请不要在id中使用_下划线符号!
+                            key: CONFIG_KEY,
+                            id: save_id,
                             data: {
                                 "id":save_id,
                                 "path":save_path}
@@ -160,7 +141,6 @@ export const AddOverflowMenu = (props) => {
                     selectedIndex={selectedIndex}
                     onSelect={onItemSelect}
                     onBackdropPress={() => setVisible(false)}>
-                    {/*<MenuItem title={ADD_VMESS_LINK_MENU_ITEM}/>*/}
                     <MenuItem title={ADD_CONFIG_MENU_ITEM}/>
 
                 </OverflowMenu>

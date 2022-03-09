@@ -15,16 +15,11 @@ export const ConfigRadioGroup = (props) => {
     const [selectedIndex, setSelectedIndex] = React.useState(-1);
     const [configs,setConfigs] = React.useState([])
     const [currentMode,setCurrentMode] = React.useState({})
-    //当前模式的名称
-    const [currentModeName,setCurrentModeName] = React.useState("")
 
     const [reloadFlag,setReloadFlag] = React.useState(props.count)
-    //打开应用时，会出现删除按钮获取不到当前模式的情况，得渲染两次才能正常
     const [reloadCount,setReloadCount] = React.useState(0)
     React.useEffect(()=>{
         async function run(){
-            // console.log("重渲染")
-            //加载当前配置
             const currentMode_temp = await Storage.load({
                 key:CURRENT_CONFIG_ID
             }).then(id_path1=>{
@@ -33,18 +28,12 @@ export const ConfigRadioGroup = (props) => {
             }).catch(e=>{
                 return {"id":"","path":"无"}
             })
-            //设置当前模式
-            // console.log("初始化,当前模式：",currentMode_temp)
             setCurrentMode(currentMode_temp)
-            // console.log("获取的当前模式",currentMode)
-            //加载所有配置
             const modeList = await Storage.getAllDataForKey(CONFIG_KEY).then(list=>{
                 return list;
             }).catch(e=>{
                 return []
             })
-            // console.log("当前列表：",modeList)
-            // console.log("加载配置=================")
             let radios_configs = modeList
             let tags = []
             let config_data = []
@@ -53,19 +42,13 @@ export const ConfigRadioGroup = (props) => {
                 if(id_path === undefined){
                     continue
                 }
-                //传参给删除方法
                 let obj = {"id":id_path['id'],"path":id_path['path']}
-                // console.log("原始对象：",id_path)
-                // console.log("复制对象",obj)
                 config_data.push(obj)
-                //设置默认选中的模式
-                //如果当前模式的id 和 配置的id相等，设置默认选中
                 if(currentMode_temp['id']===id_path['id']){
                     setSelectedIndex(index)
                 }
 
                 let name = String(id_path['path']).replace(V2RAY_CONFIG_DIR+"/","")
-                //当个模式模块
                 tags.push(
                     <Radio  key={index}>
                         <Text>{name}</Text>
@@ -73,34 +56,26 @@ export const ConfigRadioGroup = (props) => {
                     </Radio>
                 )
             }
-            //设置配置列表
             setRadios(tags)
 
-            //设置原始数据，给删除等共能使用
             setConfigs(config_data)
             if(reloadCount < 1){
                 setReloadCount(reloadCount+1)
-                // console.log("再次渲染")
             }
         }
         run();
 
-        //所有配置列表
     },[props.count,reloadFlag,reloadCount]);
 
     const radioOnChang =(index)=>{
-        // console.log("切换当前模式：",currentMode)
         setSelectedIndex(index)
     }
 
-    //切换按钮的点击事件
     function configOnChang() {
-        //切换xray路径下的文件 cp 配置文件 proxy.conf
         if(configs[selectedIndex] == undefined || configs[selectedIndex] == {}){
             return;
         }
 
-        //v2ray服务开启状态下，不能切换
         if(props.serviceStatus){
             Toast.fail({
                 content: '先关闭v2ray服务'
@@ -108,51 +83,33 @@ export const ConfigRadioGroup = (props) => {
             return;
         }
 
-        //复制文件
         let changeFileCommand = ["cp",configs[selectedIndex]["path"],V2RAY_CONFIG_FILE_PATH]
-        console.log(changeFileCommand)
         AndroidShell.runShell(changeFileCommand,null,true).then(log=>{
-            console.log("复制日志：",log)
         }).catch(e=>{
-            //执行出错的代码处理
         })
-        //储存当前模式信息
         Storage.save({
             key:CURRENT_CONFIG_ID,
             data:configs[selectedIndex]
         })
-        //切换当前模式显示
         setCurrentMode(configs[selectedIndex])
-        //重新加载组件
         setReloadFlag(new Date().getTime().toString())
     }
     const configRemove = (id_path) => {
-        //{"id": "1646151884423", "path": "/data/adb/xray/configModes/rtttt.conf"}
-        // setReloadFlag("678")
-        //删除前，判断是否选中的是当前模式，
-        //遇到的问题：打开应用后，currentMode被设置了，但是获取时却是空对象
-        console.log("当前模式：",currentMode)
-        console.log("删除模式：",id_path)
-        console.log("模式是否相等",id_path["id"]===currentMode["id"])
         if(id_path["id"]===currentMode["id"]){
             Toast.fail({
                 content: '不能删除当前模式'
             })
             return;
         }
-        // 删除储存key
         Storage.remove({
             key: CONFIG_KEY,
             id: id_path['id'],
         })
-        //删除文件
         AndroidShell.runShell(["rm","-rf",id_path['path']],null,true).then(log=>{
-            // console.log("shell删除命令返回：",log)
         })
         Toast.success({
             content: '删除成功'
         })
-        //重新加载组件
         setReloadFlag(new Date().getTime().toString())
     }
     return (
