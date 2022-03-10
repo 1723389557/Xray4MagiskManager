@@ -1,6 +1,6 @@
 import React from 'react';
 import {PermissionsAndroid, Platform, StyleSheet} from 'react-native';
-import {Button, Layout, MenuItem, OverflowMenu} from '@ui-kitten/components';
+import {Button, Layout, MenuItem, OverflowMenu, TopNavigationAction} from '@ui-kitten/components';
 import Storage from "../../utils/storage"
 import {style} from '../../style/common'
 
@@ -13,6 +13,7 @@ import {
 import {Buffer} from 'buffer';
 import {ProxyConfig} from '../../assets/json/proxy_config';
 import AndroidShell from '../../utils/AndroidShell';
+import {AddIcon} from "../../assets/constants/Icons";
 const ADD_BUTTON_NAME = "添加节点";
 const ADD_VMESS_LINK_MENU_ITEM = "从剪切板导入VMESS链接";
 const ADD_CONFIG_MENU_ITEM = "从剪切板导入完整配置";
@@ -44,9 +45,13 @@ export const AddOverflowMenu = (props) => {
         AndroidShell.runShell(["mkdir","-p",V2RAY_CONFIG_DIR],null,true)
     }
     const renderToggleButton = () => (
-        <Button style={style.top}  onPress={() => setVisible(true)}>
-            {ADD_BUTTON_NAME}
-        </Button>
+        <TopNavigationAction
+            icon={AddIcon}
+            onPress={() => setVisible(true)}
+        />
+        // <Button style={style.top}  onPress={() => setVisible(true)}>
+        //     {ADD_BUTTON_NAME}
+        // </Button>
     );
     async function requestReadPermission(){
         try {
@@ -132,9 +137,8 @@ export const AddOverflowMenu = (props) => {
         );
     }
     return (
-        <Layout style={styles.container} level='1'>
+        <Layout>
 
-            <Provider>
                 <OverflowMenu
                     anchor={renderToggleButton}
                     visible={visible}
@@ -144,16 +148,10 @@ export const AddOverflowMenu = (props) => {
                     <MenuItem title={ADD_CONFIG_MENU_ITEM}/>
 
                 </OverflowMenu>
-            </Provider>
-
         </Layout>
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        minHeight: 144,
-    },
-});
+
 
 export default AddOverflowMenu;
