@@ -1,6 +1,6 @@
 import React from 'react';
-import {Divider, Layout, Text, TopNavigation, TopNavigationAction} from "@ui-kitten/components";
-import {BackIcon} from "../assets/constants/Icons";
+import {Divider, Text, TopNavigation, TopNavigationAction} from "@ui-kitten/components";
+import {BackIcon} from "../assets/Icons";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {View} from "react-native";
 

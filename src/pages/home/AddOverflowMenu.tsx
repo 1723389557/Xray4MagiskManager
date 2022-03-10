@@ -1,19 +1,17 @@
 import React from 'react';
 import {PermissionsAndroid, Platform, StyleSheet} from 'react-native';
-import {Button, Layout, MenuItem, OverflowMenu, TopNavigationAction} from '@ui-kitten/components';
+import { Layout, MenuItem, OverflowMenu, TopNavigationAction} from '@ui-kitten/components';
 import Storage from "../../utils/storage"
-import {style} from '../../style/common'
 
 import { Clipboard } from 'react-native';
 import {
     Modal,
     Toast,
-    Provider,
 } from '@ant-design/react-native';
 import {Buffer} from 'buffer';
 import {ProxyConfig} from '../../assets/json/proxy_config';
 import AndroidShell from '../../utils/AndroidShell';
-import {AddIcon} from "../../assets/constants/Icons";
+import {AddIcon} from "../../assets/Icons";
 const ADD_BUTTON_NAME = "添加节点";
 const ADD_VMESS_LINK_MENU_ITEM = "从剪切板导入VMESS链接";
 const ADD_CONFIG_MENU_ITEM = "从剪切板导入完整配置";
@@ -49,9 +47,6 @@ export const AddOverflowMenu = (props) => {
             icon={AddIcon}
             onPress={() => setVisible(true)}
         />
-        // <Button style={style.top}  onPress={() => setVisible(true)}>
-        //     {ADD_BUTTON_NAME}
-        // </Button>
     );
     async function requestReadPermission(){
         try {
@@ -154,4 +149,3 @@ export const AddOverflowMenu = (props) => {
 
 
 
-export default AddOverflowMenu;

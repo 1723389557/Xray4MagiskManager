@@ -5,7 +5,6 @@ import AndroidShell from '../../utils/AndroidShell';
 import {Toast} from "@ant-design/react-native";
 import {style} from "../../style/common";
 import {ScrollView,View} from "react-native";
-import {SafeAreaView} from "react-native-safe-area-context";
 const CONFIG_KEY = "configkey"
 const V2RAY_PATH = "/data/adb/xray";
 const V2RAY_CONFIG_DIR = V2RAY_PATH+"/configModes"
@@ -51,37 +50,36 @@ export const ConfigRadioGroup = (props) => {
                 }
 
                 let name = String(id_path['path']).replace(V2RAY_CONFIG_DIR+"/","")
+
                 tags.push(
-                    <Divider key={Math.random()}/>
-                )
-                tags.push(
-                    <Radio   key={index}>
-                        <View style={{width:'100%',height:'100%'}}>
-                            <Text style={{width:"100%",display: 'flex', alignSelf: 'center'}}>{name}</Text>
-                            <Button style={{float:'right'}} onPress={()=>configRemove(obj)}>删除</Button>
+                    <Radio  style={{width:"100%",height:50,borderWidth:2,borderColor:"#eee",backgroundColor:"#efefef"}} key={index}>
+                        <View>
+                            <Text style={{width:100,height:50,fontSize:25,textAlign:'center',lineHeight:50,position: 'relative',right:-10,top:20}}>{name}</Text>
+                            <Button style={{width:80,height:50,position: 'relative',right:-230,top:-27}} onPress={()=>configRemove(obj)}>删除</Button>
                         </View>
                     </Radio>
                 )
-                tags.push(
-                    <Divider key={Math.random()}/>
-                )
             }
             setRadios(tags)
-
+            console.log(tags)
             setConfigs(config_data)
             if(reloadCount < 1){
                 setReloadCount(reloadCount+1)
             }
         }
         run();
-
+        console.log("重新加载")
     },[props.count,reloadFlag,reloadCount]);
 
     const radioOnChang =(index)=>{
+        console.log("被点击了")
+        console.log(index)
         setSelectedIndex(index)
     }
 
     function configOnChang() {
+        console.log(configs)
+        console.log(selectedIndex)
         if(configs[selectedIndex] == undefined || configs[selectedIndex] == {}){
             return;
         }
@@ -105,12 +103,21 @@ export const ConfigRadioGroup = (props) => {
         setReloadFlag(new Date().getTime().toString())
     }
     const configRemove = (id_path) => {
-        if(id_path["id"]===currentMode["id"]){
+
+        if(props.serviceStatus){
             Toast.fail({
-                content: '不能删除当前模式'
+                content: '先关闭v2ray服务'
             })
             return;
         }
+        if(id_path["id"]===currentMode["id"]){
+           setCurrentMode({"id":"","path":"无"})
+
+            Storage.remove({
+                key: CURRENT_CONFIG_ID
+            })
+        }
+
         Storage.remove({
             key: CONFIG_KEY,
             id: id_path['id'],
@@ -118,8 +125,10 @@ export const ConfigRadioGroup = (props) => {
         AndroidShell.runShell(["rm","-rf",id_path['path']],null,true).then(log=>{
         })
         Toast.success({
-            content: '删除成功'
+            content: '删除成功',
+
         })
+
         setReloadFlag(new Date().getTime().toString())
     }
     return (

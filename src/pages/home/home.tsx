@@ -3,12 +3,10 @@ import {Button, Layout, Text, Toggle} from "@ui-kitten/components";
 import React from 'react';
 import AndroidShell from "../../utils/AndroidShell";
 import Storage from "../../utils/storage"
-import AddOverflowMenu from "./AddOverflowMenu";
 import {ConfigRadioGroup} from "./ConfigRadioGroup";
 import axios from "axios";
 import {style} from '../../style/common'
 import {TopHomeNavigation} from "../../components/TopHomeNavigation";
-import {ConfigMenu} from "../../components/ConfigMenu";
 const AUTO_START_TPROXY_STORAGE_KEY = "autoStartTproxy"
 const V2RAY_SERVICE_NAME = "xray服务";
 const V2RAY_TPROXY_NAME = "Tproxy代理";
@@ -200,18 +198,14 @@ const HomeScreen = () => {
 
     return (
         <Layout style={{flex: 1}}>
-            {/*顶部导航*/}
             <TopHomeNavigation reloadRadioGroup={reloadRadioGroup.bind(this)}/>
             <Layout style={{flex: 1, alignItems: 'center'}}>
-                {/*开启服务按钮*/}
                 <Toggle status='success' checked={checkedService} onChange={onCheckedServiceChange}>
                     {`${serviceTitle}: ${serviceMsg}`}
                 </Toggle>
-                {/*开启tproxy按钮*/}
                 <Toggle style={style.top} status='success'  disabled={checkedAuto}  checked={checkedTProxy} onChange={onCheckedTProxyChange}>
                     {`${tproxyTitle}: ${tproxyMsg}`}
                 </Toggle>
-                {/*自动配置按钮*/}
                 <Toggle style={style.top} status='success'
                         checked={checkedAuto} onChange={onCheckedAutoChange}>
                     {autoTitle}
@@ -222,7 +216,6 @@ const HomeScreen = () => {
                 </Layout>
 
                 <ConfigRadioGroup style={{width:'100%',height:'100%'}} count={count} serviceStatus={checkedService}></ConfigRadioGroup>
-                {/*<ConfigMenu count={count} serviceStatus={checkedService}></ConfigMenu>*/}
             </Layout>
         </Layout>
 

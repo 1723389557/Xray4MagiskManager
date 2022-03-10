@@ -1,11 +1,10 @@
 import {
-    Avatar, Divider,
     Drawer,
-    DrawerItem, Icon,
+    DrawerItem,
     IndexPath,
     Layout,
     StyleService,
-    Text, TopNavigation,
+    Text,
     useStyleSheet,
 } from '@ui-kitten/components';
 
@@ -16,7 +15,7 @@ import { View } from "react-native";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import HomeScreen from '../pages/home/home'
 import {HOME_DRAWER_TITLE1, HOME_DRAWER_TITLE2, HOME_DRAWER_TOP_TITLE} from "../assets/constants/Title";
-import {HomeIcon, InfoIcon} from "../assets/constants/Icons";
+import {HomeIcon, InfoIcon} from "../assets/Icons";
 import {HOME_DRAWER_ABOUT_SCREEN_NAME, HOME_DRAWER_HOME_SCREEN_NAME} from "../assets/constants/navigator";
 import {AboutScreen} from "../pages/About";
 import {TopBackNavigation} from "../components/TopBackNavigation";
@@ -55,11 +54,6 @@ const DrawerContent = ({ navigation, state }) => {
 
 
 export const HomeDrawerNavigator = () => {
-    const [reload, setReload] = React.useState("");
-
-    const reloadAction = (v) =>{
-        setReload(v)
-    }
 
     return(
         <Navigator drawerContent={props => <DrawerContent {...props}/>} >
