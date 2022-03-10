@@ -1,24 +1,25 @@
 import React from 'react';
-import {Radio, RadioGroup, Text, Button, Divider} from '@ui-kitten/components';
-import Storage from "../../utils/storage"
-import AndroidShell from '../../utils/AndroidShell';
+import {Radio, RadioGroup, Text, Button, MenuItem, Menu} from '@ui-kitten/components';
+import Storage from "../utils/storage"
+import AndroidShell from '../utils/AndroidShell';
 import {Toast} from "@ant-design/react-native";
-import {style} from "../../style/common";
+import {style} from "../style/common";
 import {ScrollView,View} from "react-native";
-import {SafeAreaView} from "react-native-safe-area-context";
 const CONFIG_KEY = "configkey"
 const V2RAY_PATH = "/data/adb/xray";
 const V2RAY_CONFIG_DIR = V2RAY_PATH+"/configModes"
 const CURRENT_CONFIG_ID = "CURRENT-CONFIG-ID"
 const V2RAY_CONF_PATH = V2RAY_PATH+"/confs"
 const V2RAY_CONFIG_FILE_PATH = V2RAY_CONF_PATH+"/proxy.json"
-export const ConfigRadioGroup = (props) => {
+export const ConfigMenu = (props) => {
     const [radios, setRadios] = React.useState([]);
     const [selectedIndex, setSelectedIndex] = React.useState(-1);
     const [configs,setConfigs] = React.useState([])
     const [currentMode,setCurrentMode] = React.useState({})
     //当前模式的名称
     const [currentModeName,setCurrentModeName] = React.useState("")
+    const [selectedMenuIndex,setSelectedMenuIndex] = React.useState(-1)
+
 
     const [reloadFlag,setReloadFlag] = React.useState(props.count)
     //打开应用时，会出现删除按钮获取不到当前模式的情况，得渲染两次才能正常
@@ -69,23 +70,17 @@ export const ConfigRadioGroup = (props) => {
                 let name = String(id_path['path']).replace(V2RAY_CONFIG_DIR+"/","")
                 //当个模式模块
                 tags.push(
-                    <Divider key={Math.random()}/>
-                )
-                tags.push(
-                    <Radio   key={index}>
-                        <View style={{width:'100%',height:'100%'}}>
-                            <Text style={{width:"100%",display: 'flex', alignSelf: 'center'}}>{name}</Text>
-                            <Button style={{float:'right'}} onPress={()=>configRemove(obj)}>删除</Button>
-                        </View>
-                    </Radio>
-                )
-                tags.push(
-                    <Divider key={Math.random()}/>
+                    <MenuItem title={name} key={index}/>
+                    // <Radio   key={index}>
+                    //     <Text>{name}</Text>
+                    //     <Button onPress={()=>configRemove(obj)}>删除</Button>
+                    // </Radio>
                 )
             }
             //设置配置列表
             setRadios(tags)
-
+            console.log("设置。。。。。。。。。。。。。。。。。。")
+            console.log(tags.length)
             //设置原始数据，给删除等共能使用
             setConfigs(config_data)
             if(reloadCount < 1){
@@ -172,15 +167,18 @@ export const ConfigRadioGroup = (props) => {
                 {`当前模式: ${new String(currentMode.path).replace(V2RAY_CONFIG_DIR+"/","")}`}
             </Text>
             <Button style={style.top}  onPress={configOnChang}>切换模式</Button>
-            <ScrollView style={{width:'100%',height:'100%'}}>
-                <RadioGroup
-                    style={{width:'100%',height:'100%',marginLeft:15}}
-                    selectedIndex={selectedIndex}
-                    onChange={radioOnChang}
-                >
-                    {radios}
-                </RadioGroup>
-            </ScrollView>
+        {/*<ScrollView  style={{width:'100%',height:'100%'}}>*/}
+
+            <Menu style={{width:'100%',height:'100%'}}
+                          selectedIndex={selectedMenuIndex}
+                          onSelect={index => setSelectedMenuIndex(index)}
+                    >
+                        {radios}
+
+            </Menu>
+        {/*</ScrollView>*/}
+
+
         </React.Fragment>
     );
 };
