@@ -1,5 +1,5 @@
 import React from 'react';
-import {Radio, RadioGroup, Text, Button, Divider} from '@ui-kitten/components';
+import {Radio, RadioGroup, Text, Button} from '@ui-kitten/components';
 import Storage from "../../utils/storage"
 import AndroidShell from '../../utils/AndroidShell';
 import {Toast} from "@ant-design/react-native";
@@ -61,25 +61,19 @@ export const ConfigRadioGroup = (props) => {
                 )
             }
             setRadios(tags)
-            console.log(tags)
             setConfigs(config_data)
             if(reloadCount < 1){
                 setReloadCount(reloadCount+1)
             }
         }
         run();
-        console.log("重新加载")
     },[props.count,reloadFlag,reloadCount]);
 
     const radioOnChang =(index)=>{
-        console.log("被点击了")
-        console.log(index)
         setSelectedIndex(index)
     }
 
     function configOnChang() {
-        console.log(configs)
-        console.log(selectedIndex)
         if(configs[selectedIndex] == undefined || configs[selectedIndex] == {}){
             return;
         }

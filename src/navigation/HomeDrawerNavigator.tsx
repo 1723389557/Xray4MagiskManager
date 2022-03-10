@@ -19,7 +19,6 @@ import {HomeIcon, InfoIcon} from "../assets/Icons";
 import {HOME_DRAWER_ABOUT_SCREEN_NAME, HOME_DRAWER_HOME_SCREEN_NAME} from "../assets/constants/navigator";
 import {AboutScreen} from "../pages/About";
 import {TopBackNavigation} from "../components/TopBackNavigation";
-import {TopHomeNavigation} from "../components/TopHomeNavigation";
 const { Navigator, Screen } = createDrawerNavigator();
 
 const DrawerContent = ({ navigation, state }) => {
