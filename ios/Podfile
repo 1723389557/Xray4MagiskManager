@@ -16,6 +16,8 @@ target 'v2rayGUI' do
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
+
   target 'v2rayGUITests' do
     inherit! :complete
     # Pods for testing
